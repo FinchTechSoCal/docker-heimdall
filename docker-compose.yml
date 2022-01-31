@@ -2,6 +2,34 @@
 version: "2.1"
 services:
 #
+  nginx:
+    image: lscr.io/linuxserver/nginx
+    container_name: nginx
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=linuxserver/mods:universal-cron|linuxserver/mods:swag-auto-reload|linuxserver/mods:letsencrypt-imagemagick
+    volumes:
+      - ${LOCVOL1}nginx:/config
+    #ports:
+      #- 80:80
+      #- 443:443
+    restart: unless-stopped
+#
+  phpmyadmin:
+    image: lscr.io/linuxserver/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PMA_ARBITRARY=1 #optional
+      - PMA_ABSOLUTE_URI=https://phpmyadmin.finchtech.com #optional
+    volumes:
+      - ${LOCVOL1}phpmyadmin:/config
+    restart: unless-stopped
+#
   heimdall:
     image: lscr.io/linuxserver/heimdall
     container_name: heimdall
@@ -11,10 +39,22 @@ services:
       - TZ=${TZ}
     volumes:
       - ${LOCVOL1}heimdall:/config
-    #ports:
-      #- 52080:80
-      #- 52443:443
     restart: unless-stopped
+#
+  mariadb:
+    image: lscr.io/linuxserver/mariadb
+    container_name: mariadb
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=linuxserver/mods:universal-cron
+    volumes:
+      - ${LOCVOL1}mariadb:/config
+    #ports:
+      #- 3306:3306
+    restart: unless-stopped
+#
 #
 #
 networks:
