@@ -24,8 +24,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - PMA_ARBITRARY=1 #optional
-      - PMA_ABSOLUTE_URI=https://phpmyadmin.finchtech.com #optional
+      - PMA_ARBITRARY=1 #optional 1 to allow to connect to any server
+      #- PMA_ABSOLUTE_URI=https://phpmyadmin.finchtech.com #optional
     ports:
       - 8082:80
     volumes:
