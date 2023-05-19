@@ -1,66 +1,23 @@
 ---
 version: "2.1"
 services:
-#
-  #nginx:
-    #image: lscr.io/linuxserver/nginx
-    #container_name: nginx
-    #environment:
-    #  - PUID=${PUID}
-    #  - PGID=${PGID}
-    #  - TZ=${TZ}
-    #  - DOCKER_MODS=linuxserver/mods:universal-cron|linuxserver/mods:swag-auto-reload|linuxserver/mods:letsencrypt-imagemagick
-    #volumes:
-    #  - ${LOCVOL1}nginx:/config
-    #ports:
-      #- 80:80
-      #- 443:443
-    #restart: unless-stopped
-#
-  phpmyadmin:
-    #image: lscr.io/linuxserver/phpmyadmin:5.1.3-ls38 <-- PMA_ARBITRARY works in this version
-    image: lscr.io/linuxserver/phpmyadmin
-    container_name: phpmyadmin
+  adminer:
+    image: lscr.io/linuxserver/nginx:latest
+    container_name: adminer
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - PMA_ARBITRARY=1 #optional 1 to allow to connect to any server
-      #- PMA_ABSOLUTE_URI=https://phpmyadmin.finchtech.com #optional
+      #- DOCKER_MODS=linuxserver/mods:swag-imagemagick|linuxserver/mods:universal-cron
+    volumes:
+      - ${LOCVOL1}adminer:/config
     ports:
-      - 8082:80
-    volumes:
-      - ${LOCVOL1}phpmyadmin:/config
-    restart: unless-stopped
-#
-  heimdall:
-    image: lscr.io/linuxserver/heimdall
-    container_name: heimdall
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${LOCVOL1}heimdall:/config
-    restart: unless-stopped
-#
-  mariadb:
-    image: lscr.io/linuxserver/mariadb
-    container_name: mariadb
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - DOCKER_MODS=linuxserver/mods:universal-cron
-    volumes:
-      - ${LOCVOL1}mariadb:/config
-    #ports:
-      #- 3306:3306
+      - 10082:80
     restart: unless-stopped
 #
 #
 #
 networks:
   default:
-    external:
-      name: ${CONNET}
+    external: true
+    name: ${CONNET}
